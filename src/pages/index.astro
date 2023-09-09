@@ -1,0 +1,21 @@
+---
+import BestSong from "../components/best-song.astro"
+import "../styles/styles.css"
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>TopCançons</title>
+	</head>
+	<body class="bg-zinc-900 text-white text-[17px]">
+		<nav class="max-w-[55em] w-full py-[40px] px-[30px]">
+			<a href="/">topcançons</a>
+		</nav>
+		<main class="w-full max-w-[55em] py-[40px] px-[30px]">
+			<BestSong song="Rock & Roll" />
+		</main>
+	</body>
+</html>

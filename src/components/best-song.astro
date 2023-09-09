@@ -1,0 +1,105 @@
+---
+interface Props {
+	song: string
+}
+
+const { song } = Astro.props
+---
+
+<article class="w-full h-[450px] rounded-[25px] text-[25px] font-bold flex flex-col" id="best-song">
+	<div id="best-song-bg"></div>
+	<div
+		id="best-song-shadow"
+		class="w-[60px] h-[60px] bg-slate-200 opacity-100 blur-3xl rounded-full top-[50%] left-[50%] absolute z-10"
+	>
+	</div>
+	<div class="w-full h-full rounded-[25px] flex flex-col" id="best-song-container">
+		<nav class="p-[30px] h-full max-h-[0px] text-start w-full">
+			<h4>Millor canço</h4>
+		</nav>
+		<main class="text-center flex flex-col items-center justify-center h-full">
+			<h1
+				class="text-8xl font-extrabold text-transparent bg-gradient-to-r from-zinc-300 to-zinc-500 bg-clip-text"
+			>
+				{song}
+			</h1>
+		</main>
+		<footer class="p-[20px] text-[18px] text-start w-full">Actualizat: 09/09/23</footer>
+	</div>
+</article>
+<script is:inline>
+const myPanel = document.getElementById("best-song")
+const subpanel = document.getElementById("best-song-bg")
+const $shadow = document.getElementById("best-song-shadow")
+myPanel.onmousemove = (e) => {
+    transformPanel(e)
+    shadow(e)
+}
+myPanel.onmouseenter = (e) => {
+    handleMouseEnter(e)
+}
+myPanel.onmouseleave = (e) => {
+    handleMouseLeave(e)
+}
+
+let mouseX, mouseY
+
+const transformAmount = 2
+const shadow = function (e) {
+    const x = e.clientX - myPanel.offsetLeft
+    const y = e.clientY - myPanel.offsetTop
+
+    $shadow.style.left = `${x}px`
+    $shadow.style.top = `${y}px`
+
+}
+
+function transformPanel(mouseEvent) {
+    mouseX = mouseEvent.pageX
+    mouseY = mouseEvent.pageY
+
+    const centerX = myPanel.offsetLeft + myPanel.clientWidth / 2
+    const centerY = myPanel.offsetTop + myPanel.clientHeight / 2
+
+    const percentX = (mouseX - centerX) / (myPanel.clientWidth / 2)
+    const percentY = -((mouseY - centerY) / (myPanel.clientHeight / 2))
+
+    myPanel.style.transform =
+        "perspective(400px) rotateY(" +
+        percentX * transformAmount +
+        "deg) rotateX(" +
+        percentY * transformAmount +
+        "deg)"
+    subpanel.style.transform =
+        "perspective(400px) rotateY(" +
+        percentX * (transformAmount / 2) +
+        "deg) rotateX(" +
+        percentY * (transformAmount / 2) +
+        "deg)"
+}
+
+function handleMouseEnter() {
+    $shadow.style.transition = "all 0s"
+
+    setTimeout(() => {
+        subpanel.style.transition = ""
+    }, 100)
+    subpanel.style.transition = "transform 0.1s"
+}
+
+function handleMouseLeave() {
+    myPanel.style.transition = "transform 0.1s"
+    subpanel.style.transition = "transform 0.1s"
+    $shadow.style.transition = "all 1s"
+
+    setTimeout(() => {
+        subpanel.style.transition = ""
+    }, 100)
+
+    $shadow.style.top = "50%"
+    $shadow.style.left = "50%"
+
+    myPanel.style.transform = "perspective(400px) rotateY(0deg) rotateX(0deg)"
+    subpanel.style.transform = "perspective(400px) rotateY(0deg) rotateX(0deg)"
+}
+</script>
